@@ -5,16 +5,13 @@ from mfutil import BashWrapperOrRaise
 
 NGINX_PORT = int(os.environ['MFSERV_NGINX_PORT'])
 
-templates = ("python2_noweb")
 
-for template in templates:
+BashWrapperOrRaise("rm -Rf foobar")
+BashWrapperOrRaise("plugins.uninstall foobar || true")
 
-    BashWrapperOrRaise("rm -Rf foobar")
-    BashWrapperOrRaise("plugins.uninstall foobar || true")
+print(BashWrapperOrRaise("bootstrap_plugin.py create --template=python2_noweb "
+                         "--no-input foobar")
+print(BashWrapperOrRaise("cd foobar && make release"))
+print(BashWrapperOrRaise('cd foobar && plugins.install "$(ls *.plugin)"'))
 
-    print(BashWrapperOrRaise("bootstrap_plugin.py create --template=%s "
-                             "--no-input foobar" % template))
-    print(BashWrapperOrRaise("cd foobar && make release"))
-    print(BashWrapperOrRaise('cd foobar && plugins.install "$(ls *.plugin)"'))
-
-    print("ok")
+print("ok")
