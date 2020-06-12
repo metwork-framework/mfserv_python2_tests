@@ -10,7 +10,7 @@ BashWrapperOrRaise("rm -Rf foobar")
 BashWrapperOrRaise("plugins.uninstall foobar || true")
 
 print(BashWrapperOrRaise("bootstrap_plugin.py create --template=python2_noweb "
-                         "--no-input foobar")
+                         "--no-input foobar"))
 print(BashWrapperOrRaise("cd foobar && make release"))
 print(BashWrapperOrRaise('cd foobar && plugins.install "$(ls *.plugin)"'))
 
