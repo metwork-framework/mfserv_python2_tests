@@ -21,7 +21,7 @@ integration_tests_common: &integration_tests_common
     - echo -e "name=Metwork Continuous Integration Branch $${DEP_BRANCH}" >> /etc/yum.repos.d/metwork.repo
     - echo -e "baseurl=http://metwork-framework.org/pub/metwork/continuous_integration/rpms/$${DEP_BRANCH}/${OS_VERSION}/" >> /etc/yum.repos.d/metwork.repo
     - echo -e "gpgcheck=0\n\enabled=1\n\metadata_expire=0\n" >>/etc/yum.repos.d/metwork.repo
-    - yum -y install metwork-mfserv-full metwork-mfext-layer-python2_
+    - yum -y install metwork-mfserv-full metwork-mfext-layer-python2
     - yum -y install make
 
     - su --command="mfserv.init" - mfserv
