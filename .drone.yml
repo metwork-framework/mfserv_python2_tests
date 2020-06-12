@@ -1,0 +1,67 @@
+# automatically generated from https://github.com/metwork-framework/resources/blob/master/cookiecutter/_%7B%7Bcookiecutter.repo%7D%7D/mfxxx_drone.yml template
+
+
+
+    
+    
+
+
+
+    
+        
+        
+    
+
+
+integration_tests_common: &integration_tests_common
+  commands:
+    - if test "$${FORCED_OS_VERSION}" != ""; then if test "$${FORCED_OS_VERSION}" != "${OS_VERSION}"; then echo "step bypass"; exit 0; fi; fi
+
+    - echo -e "[metwork_$${DEP_BRANCH}]" >/etc/yum.repos.d/metwork.repo
+    - echo -e "name=Metwork Continuous Integration Branch $${DEP_BRANCH}" >> /etc/yum.repos.d/metwork.repo
+    - echo -e "baseurl=http://metwork-framework.org/pub/metwork/continuous_integration/rpms/$${DEP_BRANCH}/${OS_VERSION}/" >> /etc/yum.repos.d/metwork.repo
+    - echo -e "gpgcheck=0\n\enabled=1\n\metadata_expire=0\n" >>/etc/yum.repos.d/metwork.repo
+    - yum -y install metwork-mfserv-python2_devtools
+    - yum -y install make
+
+    - su --command="mfserv.init" - mfserv
+    - su --command="mfserv.start" - mfserv
+    - su --command="mfserv.status" - mfserv
+    - if test -d "integration_tests"; then chown -R mfserv integration_tests; cd integration_tests; su --command="cd `pwd`; ./run_integration_tests.sh" - mfserv; cd ..; fi
+    - su --command="mfserv.stop" - mfserv
+
+
+pipeline:
+
+  integration_tests_integration:
+    <<: *integration_tests_common
+    
+    image: metwork/mfxxx-${OS_VERSION}-testimage:integration
+    
+    environment:
+      - DEP_BRANCH=integration
+    when:
+
+      event: [push, pull_request]
+
+      branch: [ integration, ci_*, pci_* ]
+  integration_tests:
+    <<: *integration_tests_common
+    
+    image: metwork/mfxxx-${OS_VERSION}-testimage:${DRONE_BRANCH}
+    
+    environment:
+      - DEP_BRANCH=${DRONE_BRANCH}
+    when:
+
+      event: [push, pull_request]
+
+      branch: [  master, release_*, experimental* ]
+
+
+matrix:
+  OS_VERSION:
+    - centos6
+
+
+branches: [ master, integration, experimental*, ci_*, pci_*, release_* ]
