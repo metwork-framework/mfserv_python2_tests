@@ -9,12 +9,7 @@ from mfutil import BashWrapperOrRaise
 
 NGINX_PORT = int(os.environ['MFSERV_NGINX_PORT'])
 
-#python2@mfext may not be installed
-#bash_wrapper = BashWrapperOrRaise("is_layer_installed python2@mfext")
-#if bash_wrapper.stdout != "1":
-    VERSIONS = [ 2 ]
-#else:
-#    VERSIONS= [ 3, 2 ]
+VERSIONS = [ 2 ]
 
 for VERSION in VERSIONS:
     BashWrapperOrRaise("rm -Rf foobar")

@@ -5,12 +5,7 @@ from mfutil import BashWrapperOrRaise
 
 NGINX_PORT = int(os.environ['MFSERV_NGINX_PORT'])
 
-#python2@mfext may not be installed
-#bash_wrapper = BashWrapperOrRaise("is_layer_installed python2@mfext")
-#if bash_wrapper.stdout != "1":
-#    templates = ("python3_noweb", "node_noweb")
-#else:
-    templates = ("python2_noweb")
+templates = ("python2_noweb")
 
 for template in templates:
 
