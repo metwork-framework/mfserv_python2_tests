@@ -2,15 +2,13 @@
 
 
 
-    
+
     
 
 
 
-    
-        
-        
-    
+
+
 
 
 integration_tests_common: &integration_tests_common
@@ -64,6 +62,7 @@ pipeline:
 
       branch: [  master, release_*, experimental* ]
 
+ 
 
 matrix:
   OS_VERSION:
